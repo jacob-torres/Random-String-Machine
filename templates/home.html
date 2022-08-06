@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <form method="post" action="http://127.0.0.1:5000/strings">
+        <label for="string-number">Number of Strings (between 1 and 100)</label>
+        <input name="string-number" id="string-number" value=20 required><br>
+
+        <label for="string-length">String Length (between 1 and 100)</label>
+        <input name="string-length" id="string-length" value=20 required><br>
+
+        <label for="lowercase">Lowercase Letters</label>
+        <input type="checkbox" name="lowercase" id="lowercase" value="Lowercase Letters" checked><br>
+
+        <label for="uppercase">Uppercase Letters</label>
+        <input type="checkbox" name="uppercase" id="uppercase" value="Uppercase Letters"><br>
+
+        <labelfor="numeric">Numeric Digits</label>
+        <input type="checkbox" name="numeric" id="numeric" value="Numeric Digits"><br>
+
+        <label for="special-chars">Special Characters</label>
+        <input type="checkbox" name="special-chars" id="special-chars" value="Special Characters"><br>
+
+        <input type="submit"  value="Get Strings!">
+    </form>
+
+    {% for message in get_flashed_messages() %}
+    <div>{{ message }}</div>
+    {% endfor %}
+{% endblock %}
