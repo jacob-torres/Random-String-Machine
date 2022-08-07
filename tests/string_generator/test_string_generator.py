@@ -104,6 +104,32 @@ class TestStringGenerator(unittest.TestCase):
         # Check that only uppercase letters are in the results
         self.assertEqual(string_match_exp, string_match_result)
 
+    def test_copy_string(self):
+        """Test the copy_string method."""
+        # Define the expected values
+        string_length_exp = 20
+        char_type_exp = 'numeric'
+        string_match_exp = True
+
+        # Instantiate a StringGenerator object with only digits
+        string_generator = StringGenerator(
+            has_lowercase=False, has_uppercase=False, has_special_chars=False
+        )
+
+        # Copy a generated string and paste the result
+        string_generator.copy_string()
+        string_result = pyperclip.paste()
+        string_match = re.sub('[^0-9]', '', string_result)
+        string_match_result = string_match == string_result
+
+        # Check the length and characters of the result
+        self.assertEqual(string_length_exp, len(string_result))
+        self.assertEqual(string_match_exp, string_match_result)
+        self.assertIn(char_type_exp, string_generator.char_types.keys())
+        self.assertNotIn('lowercase', string_generator.char_types.keys())
+        self.assertNotIn('uppercase', string_generator.char_types.keys())
+        self.assertNotIn('special_chars', string_generator.char_types.keys())
+
 
 if __name__ == '__main__':
     unittest.main()
