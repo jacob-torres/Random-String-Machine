@@ -10,7 +10,7 @@ from string_generator import StringGenerator
 class TestStringGenerator(unittest.TestCase):
     """This class tests the methods of the StringGenerator class."""
 
-    def test_no_args(self):
+    def test_instantiate_with_no_args(self):
         """Test instantiating a StringGenerator object with no arguments."""
         # Define expected values
         num_strings_exp = 10
@@ -41,7 +41,6 @@ class TestStringGenerator(unittest.TestCase):
         # Define the expected values
         string_type_exp = str
         string_length_exp = 14
-        char_types_exp = ['lowercase', 'numeric']
         string_match_exp = True
 
         # Instantiate a StringGenerator object with string_length of 14
@@ -52,14 +51,12 @@ class TestStringGenerator(unittest.TestCase):
 
         # Record the length and content of the generated string
         string_result = string_generator.get_string()
-        string_match = re.sub('[a-z0-9]', '', string_result)
-        string_match_result = len(string_match) == 0
+        string_match = re.sub('[^a-z0-9]', '', string_result)
+        string_match_result = string_match == string_result
 
         # Check the type and length of the result
         self.assertIs(string_type_exp, type(string_result))
         self.assertEqual(string_length_exp, len(string_result))
-
-        # Check the character types
         self.assertIn('lowercase', string_generator.char_types.keys())
         self.assertIn('numeric', string_generator.char_types.keys())
         self.assertNotIn('uppercase', string_generator.char_types.keys())
@@ -74,7 +71,6 @@ class TestStringGenerator(unittest.TestCase):
         strings_type_exp = list
         num_strings_exp = 5
         string_length_exp = 50
-        char_type_exp = 'uppercase'
         string_match_exp = True
 
         # Instantiate a StringGenerator object producing 5 strings,
@@ -88,7 +84,7 @@ class TestStringGenerator(unittest.TestCase):
         strings_result = string_generator.get_strings()
         string_result = strings_result[0]
         string_match = re.sub('[^A-Z]', '', string_result)
-        string_match_result = string_result == string_match
+        string_match_result = string_match == string_result
 
         # Check the type, number, and length of the string results
         self.assertIs(strings_type_exp, type(strings_result))
@@ -96,7 +92,7 @@ class TestStringGenerator(unittest.TestCase):
         self.assertEqual(string_length_exp, len(string_result))
 
         # Check the result character types
-        self.assertIn(char_type_exp, string_generator.char_types.keys())
+        self.assertIn('uppercase', string_generator.char_types.keys())
         self.assertNotIn('lowercase', string_generator.char_types.keys())
         self.assertNotIn('numeric', string_generator.char_types.keys())
         self.assertNotIn('special_chars', string_generator.char_types.keys())
@@ -108,7 +104,6 @@ class TestStringGenerator(unittest.TestCase):
         """Test the copy_string method."""
         # Define the expected values
         string_length_exp = 20
-        char_type_exp = 'numeric'
         string_match_exp = True
 
         # Instantiate a StringGenerator object with only digits
@@ -125,7 +120,7 @@ class TestStringGenerator(unittest.TestCase):
         # Check the length and characters of the result
         self.assertEqual(string_length_exp, len(string_result))
         self.assertEqual(string_match_exp, string_match_result)
-        self.assertIn(char_type_exp, string_generator.char_types.keys())
+        self.assertIn('numeric', string_generator.char_types.keys())
         self.assertNotIn('lowercase', string_generator.char_types.keys())
         self.assertNotIn('uppercase', string_generator.char_types.keys())
         self.assertNotIn('special_chars', string_generator.char_types.keys())
