@@ -1,4 +1,5 @@
 """Main random string generation methods."""
+import pyperclip
 import random
 import sys
 
@@ -26,13 +27,13 @@ class StringGenerator:
         has_lowercase : bool, default = True
         Whether or not the strings will contain lowercase letters
 
-        has_uppercase : bool, default = False
+        has_uppercase : bool, default = True
         Whether or not the strings will contain uppercase letters
 
-        has_numeric : bool, default = False
+        has_numeric : bool, default = True
         Whether or not the strings will contain numeric digits
 
-        has_special_chars : bool, default = False
+        has_special_chars : bool, default = True
         Whether or not the strings will contain special characters
         """
         self.num_strings = num_strings
@@ -127,15 +128,40 @@ class StringGenerator:
         for i in range(self.num_strings):
             string = self.get_string()
             strings.append(string)
-            print(string)
 
         return strings
+
+    def print_string(self):
+        string = self.get_string()
+        print(string)
+
+    def print_strings(self):
+        strings = self.get_strings()
+        for string in strings:
+            print(string)
+
+    def copy_string(self):
+        string = self.get_string()
+        try:
+            pyperclip.copy(string)
+            print("Copied to the clipboard!")
+        except:
+            print("Something went wrong.")
+
+    def copy_strings(self):
+        strings = self.get_strings()
+        try:
+            for string in strings:
+                pyperclip.copy(string)
+            print("Copied to the clipboard!")
+        except:
+            print("Something went wrong.")
 
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
         string_generator = StringGenerator()
-        string_generator.get_strings()
+        string_generator.copy_string()
     elif len(sys.argv) == 7:
         num_strings = sys.argv[1]
         string_length = sys.argv[2]
