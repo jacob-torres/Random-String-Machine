@@ -158,18 +158,6 @@ class StringGenerator:
         except:
             print("Something went wrong.")
 
-    def copy_strings(self):
-        """This method copies a list of randomly
-        generated strings to the clipboard.
-        """
-        strings = self.get_strings()
-        try:
-            for string in strings:
-                pyperclip.copy(string)
-            print("Copied to the clipboard!")
-        except:
-            print("Something went wrong.")
-
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
