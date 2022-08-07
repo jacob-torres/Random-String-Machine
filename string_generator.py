@@ -1,7 +1,8 @@
 """Main random string generation methods."""
-import pyperclip
 import random
 import sys
+
+import pyperclip
 
 
 class StringGenerator:
@@ -47,8 +48,12 @@ class StringGenerator:
         try:
             if type(self.num_strings) is not int:
                 raise ValueError("Please specify a numeric value for number of strings.")
+            elif self.num_strings not in range(1, 101):
+                raise ValueError("Please specify a number of strings between 1 and 100.")
             elif type(self.string_length) is not int:
                 raise ValueError("Please specify a numeric value for string length.")
+            elif self.string_length not in range(1, 100):
+                raise ValueError("Please specify a string length between 1 and 100.")
             elif (
                 not self.has_lowercase and not self.has_uppercase and
                 not self.has_numeric and not self.has_special_chars
@@ -132,15 +137,20 @@ class StringGenerator:
         return strings
 
     def print_string(self):
+        """This method prints a single string of random characters."""
         string = self.get_string()
         print(string)
 
     def print_strings(self):
+        """This method prints a list of randomly generated strings."""
         strings = self.get_strings()
         for string in strings:
             print(string)
 
     def copy_string(self):
+        """This method copies a single string
+        of random characters to the clipboard.
+        """
         string = self.get_string()
         try:
             pyperclip.copy(string)
@@ -149,6 +159,9 @@ class StringGenerator:
             print("Something went wrong.")
 
     def copy_strings(self):
+        """This method copies a list of randomly
+        generated strings to the clipboard.
+        """
         strings = self.get_strings()
         try:
             for string in strings:
@@ -174,6 +187,6 @@ if __name__ == '__main__':
             has_lowercase, has_uppercase,
             has_numeric, has_special_chars
         )
-        string_generator.get_strings()
+        string_generator.print_strings()
     else:
         print("Wrong number of arguments.")
