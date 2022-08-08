@@ -45,24 +45,35 @@ class StringGenerator:
         self.has_special_chars = has_special_chars
         self.char_types = {}
 
-        try:
-            if type(self.num_strings) is not int:
-                raise ValueError("Please specify a numeric value for number of strings.")
-            elif self.num_strings not in range(1, 101):
-                raise ValueError("Please specify a number of strings between 1 and 100.")
-            elif type(self.string_length) is not int:
-                raise ValueError("Please specify a numeric value for string length.")
-            elif self.string_length not in range(1, 100):
-                raise ValueError("Please specify a string length between 1 and 100.")
-            elif (
-                not self.has_lowercase and not self.has_uppercase and
-                not self.has_numeric and not self.has_special_chars
-            ):
-                raise ValueError("Please select at least one type of character.")
+        if type(self.num_strings) is float:
+            self.num_strings = int(self.num_strings)
+        elif type(self.num_strings) is not int:
+            print("A numeric value is required for number of strings. Defaulting to 10")
+            self.num_strings = 10
+        elif self.num_strings not in range(1, 101):
+            print("A number of strings between 1 and 100 is required. Defaulting to 10.")
+            self.num_strings = 10
 
-        # Except behavior will include passing the error message to Flask flash method
-        except ValueError as error:
-            print(error)
+        if type(self.string_length) is float:
+            self.string_length = int(self.string_length)
+        elif type(self.string_length) is not int:
+            print("A numeric value is required for string length. Defaulting to 20")
+            self.string_length = 20
+        elif self.string_length not in range(1, 100):
+            print("A string length between 1 and 100 is required. Defaulting to 20.")
+            self.string_length = 20
+
+        if not any(
+            (
+                self.has_lowercase, self.has_uppercase,
+                self.has_numeric, self.has_special_chars
+            )
+        ):
+            print("At least one type of character is required. Selecting all by default.")
+            self.has_lowercase = True
+            self.has_uppercase = True
+            self.has_numeric = True
+            self.has_special_chars = True
 
         # Determine which types of characters will be included
         if self.has_lowercase:
