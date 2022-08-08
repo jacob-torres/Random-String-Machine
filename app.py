@@ -1,9 +1,12 @@
+"""Main module for running the Flask application."""
 import random
 from datetime import datetime
 import re
 
 from dotenv import load_dotenv
 from flask import Flask, flash, redirect, render_template, request, url_for
+
+from string_generator import StringGenerator
 
 
 app = Flask(__name__)
@@ -21,46 +24,45 @@ def get_strings():
     if request.method == 'POST':
         num_strings = request.form.get('string-number')
         string_length = request.form.get('string-length')
-        lowercase = request.form.get('lowercase')
-        uppercase = request.form.get('uppercase')
-        numeric = request.form.get('numeric')
-        special_chars = request.form.get('special-chars')
+        has_lowercase = request.form.get('lowercase')
+        has_uppercase = request.form.get('uppercase')
+        has_numeric = request.form.get('numeric')
+        has_special_chars = request.form.get('special-chars')
         error = None
 
-        if not num_strings:
-            error = "Please specify a number of strings to generate."
-        elif not string_length:
-            error = "Please specify the length of strings to generate."
-        elif not lowercase and not uppercase and not numeric and not special_chars:
-            error = "Please select at least one type of character."
-        elif not(num_strings.isnumeric() or num_strings in range(1, 101)):
-            error = "Please specify a number of strings between 1 and 100."
-        elif not(string_length.isnumeric() or string_length in range(1, 101)):
-            error = "Please specify a string length between 1 and 100."
+        if type(num_strings) is float:
+            num_strings = int(num_strings)
+        elif type(num_strings) is not int:
+            error = "A numeric value is required for number of strings."
+        elif num_strings not in range(1, 101):
+            error = "A number of strings between 1 and 100 is required."
+
+        if type(string_length) is float:
+            string_length = int(string_length)
+        elif type(string_length) is not int:
+            error ="A numeric value is required for string length."
+        elif string_length not in range(1, 100):
+            error = "A string length between 1 and 100 is required."
+
+        if not any(
+            (
+                has_lowercase, has_uppercase,
+                has_numeric, has_special_chars
+            )
+        ):
+            error = "At least one type of character is required."
+
+        # Generate strings
+        string_generator = StringGenerator(
+            num_strings=num_strings, string_length=string_length,
+            has_lowercase=has_lowercase, has_uppercase=has_uppercase,
+            has_numeric=has_numeric, has_special_chars=has_special_chars
+        )
 
         if not error:
-            char_types = []
-
-            if lowercase:
-                char_types.append([x for x in range(97, 123)])
-            if uppercase:
-                char_types.append([x for x in range(65, 91)])
-            if numeric:
-                strings = []
-                char_types.append([x for x in range(48, 58)])
-            if special_chars:
-                char_types.append([33, 35, 36, 37, 38, 42, 43, 44, 45, 46, 47, 94, 95])
-
-            for string in range(int(num_strings)):
-                strings.append(
-                    ''.join(
-                        chr(random.choice(random.choice(char_types)))
-                        for char in range(int(string_length))
-                    )
-                )
-
-        else:
-            flash(error)
+            string_generator.print_strings()
+    else:
+        flash(error)
 
     return render_template('get_strings.html')
 
