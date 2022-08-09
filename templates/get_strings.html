@@ -1,5 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <p>Here are your strings:</p>
-{% endblock %}
+    <p>Here are your {{ num_strings }} strings:</p>
+    <ul class="string-list">
+        {% for string in strings %}
+            <li>{{ string }}</li>
+        {% endfor %}
+    </ul>
+{% endblock content %}
