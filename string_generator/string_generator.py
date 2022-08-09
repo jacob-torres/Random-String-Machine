@@ -78,8 +78,9 @@ class StringGenerator:
             self.char_types['numeric'] = [chr(code) for code in range(48, 58)]
         if self.has_special_chars:
             self.char_types['special_chars'] = [
-                '!', '@', '#', '$', '%', '^', '&', '*',
-                '_', '-', '+', '=', '/', '|', '`', '~'
+                '`', '~', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')',
+                '_', '-', '+', '=', '\\', '|', '[', ']', '{', '}',
+                ',', '<', '.', '>', '/', '?', '\'', '"', ';', ':'
             ]
 
         if not self.char_types:
