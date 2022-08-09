@@ -1,19 +1,19 @@
 """Main module for running the Flask application."""
-import uuid
+from uuid import uuid4
 
 from dotenv import load_dotenv
-from flask import Flask, flash, redirect, render_template, request, url_for
+from flask import Flask, flash, render_template, request
 
 from string_generator import StringGenerator
 
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = str(uuid.uuid4())
+app.config['SECRET_KEY'] = str(uuid4())
 load_dotenv()
 
 
 @app.route('/', methods=['GET', 'POST'])
-def home():
+def index():
     if request.method == 'POST':
         num_strings = request.form.get('string-number')
         string_length = request.form.get('string-length')
@@ -30,12 +30,12 @@ def home():
             )
             strings = string_generator.get_strings()
 
-            return render_template('get_strings.html', num_strings=num_strings, strings=strings)
+            return render_template('strings.html', num_strings=num_strings, strings=strings)
 
         except ValueError as error:
             flash(error.args[0])
 
-    return render_template('home.html')
+    return render_template('index.html')
 
 
 if __name__ == '__main__':

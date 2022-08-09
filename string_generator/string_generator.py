@@ -6,7 +6,7 @@ import pyperclip
 
 
 class StringGenerator:
-    """Random string generator."""
+    """The random string generator class."""
 
     def __init__(self, num_strings=10, string_length=20,
                 has_lowercase=True, has_uppercase=True,
@@ -38,6 +38,12 @@ class StringGenerator:
 
         has_special_chars : bool, default = True
         Whether or not the strings will contain special characters
+
+        raises
+        ------
+        ValueError : If `num_strings` or `string_length` are not
+        numeric values between 1 and 100, or if all of the
+        character types are False
         """
         self.num_strings = num_strings
         self.string_length = string_length
