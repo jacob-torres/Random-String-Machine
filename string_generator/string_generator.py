@@ -17,6 +17,8 @@ class StringGenerator:
         `has_numeric`, and `has_special_chars`,) which are used to
         determine the type of strings which will be generated.
 
+        At least one character type value must be True.
+
         parameters
         ----------
         num_strings : int, default = 20
@@ -45,6 +47,21 @@ class StringGenerator:
         self.has_special_chars = has_special_chars
         self.char_types = {}
 
+        # Check argument validity
+        if type(self.num_strings) is str and self.num_strings.isnumeric():
+            self.num_strings = int(self.num_strings)
+        elif type(self.num_strings) is not int:
+            raise ValueError("A numeric value is required for number of strings.")
+        elif self.num_strings not in range(1, 101):
+            raise ValueError("A number of strings between 1 and 100 is required.")
+
+        if type(self.string_length) is str and self.string_length.isnumeric():
+            self.string_length = int(self.string_length)
+        elif type(self.string_length) is not int:
+            raise ValueError("A numeric value is required for string length.")
+        elif self.string_length not in range(1, 100):
+            raise ValueError("A string length between 1 and 100 is required.")
+
         # Determine which types of characters will be included
         if self.has_lowercase:
             self.char_types['lowercase'] = [chr(code) for code in range(97, 123)]
@@ -57,8 +74,9 @@ class StringGenerator:
                 '!', '@', '#', '$', '%', '^', '&', '*',
                 '_', '-', '+', '=', '/', '|', '`', '~'
             ]
+        else:
+            raise ValueError("At least one character type is required.")
 
-    
     def get_char_type(self):
         """
         This method randomly selects a character type.
@@ -68,7 +86,10 @@ class StringGenerator:
         char_type : str
         A randomly selected character type
         """
-        return random.choice(list(self.char_types.keys()))
+        try:
+            return random.choice(list(self.char_types.keys()))
+        except IndexError:
+            print("No character types have been selected to generate strings with.")
 
     def get_char(self):
         """
@@ -82,7 +103,6 @@ class StringGenerator:
         char_type = self.get_char_type()
         chars = self.char_types[char_type]
         char = random.choice(chars)
-
         return char
 
     def get_string(self):
@@ -116,11 +136,6 @@ class StringGenerator:
             strings.append(string)
 
         return strings
-
-    def print_string(self):
-        """This method prints a single string of random characters."""
-        string = self.get_string()
-        print(string)
 
     def print_strings(self):
         """This method prints a list of randomly generated strings."""

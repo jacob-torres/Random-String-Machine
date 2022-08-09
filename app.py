@@ -1,7 +1,5 @@
 """Main module for running the Flask application."""
-import random
-from datetime import datetime
-import re
+import uuid
 
 from dotenv import load_dotenv
 from flask import Flask, flash, redirect, render_template, request, url_for
@@ -10,7 +8,7 @@ from string_generator import StringGenerator
 
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'secret'
+app.config['SECRET_KEY'] = str(uuid.uuid4())
 load_dotenv()
 
 
@@ -28,43 +26,20 @@ def get_strings():
         has_uppercase = request.form.get('uppercase')
         has_numeric = request.form.get('numeric')
         has_special_chars = request.form.get('special-chars')
-        error = None
 
-        if type(num_strings) is float:
-            num_strings = int(num_strings)
-        elif type(num_strings) is not int:
-            error = "A numeric value is required for number of strings."
-        elif num_strings not in range(1, 101):
-            error = "A number of strings between 1 and 100 is required."
-
-        if type(string_length) is float:
-            string_length = int(string_length)
-        elif type(string_length) is not int:
-            error ="A numeric value is required for string length."
-        elif string_length not in range(1, 100):
-            error = "A string length between 1 and 100 is required."
-
-        if not any(
-            (
-                has_lowercase, has_uppercase,
-                has_numeric, has_special_chars
+        try:
+            string_generator = StringGenerator(
+                num_strings=num_strings, string_length=string_length,
+                has_lowercase=has_lowercase, has_uppercase=has_uppercase,
+                has_numeric=has_numeric, has_special_chars=has_special_chars
             )
-        ):
-            error = "At least one type of character is required."
+            strings = string_generator.get_strings()
 
-        # Generate strings
-        string_generator = StringGenerator(
-            num_strings=num_strings, string_length=string_length,
-            has_lowercase=has_lowercase, has_uppercase=has_uppercase,
-            has_numeric=has_numeric, has_special_chars=has_special_chars
-        )
+            return redirect(url_for('get_strings'), num_strings=num_strings, strings=strings)
 
-        if not error:
-            string_generator.print_strings()
-    else:
-        flash(error)
-
-    return render_template('get_strings.html')
+        except ValueError as error:
+            flash(error.args[0])
+            return redirect(url_for('home'))
 
 
 if __name__ == '__main__':
