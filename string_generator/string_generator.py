@@ -48,19 +48,20 @@ class StringGenerator:
         self.char_types = {}
 
         # Check argument validity
-        if type(self.num_strings) is str and self.num_strings.isnumeric():
+        if self.num_strings.isnumeric():
             self.num_strings = int(self.num_strings)
-        elif type(self.num_strings) is not int:
+        else:
             raise ValueError("A numeric value is required for number of strings.")
-        elif self.num_strings not in range(1, 101):
-            raise ValueError("A number of strings between 1 and 100 is required.")
 
-        if type(self.string_length) is str and self.string_length.isnumeric():
+        if self.string_length.isnumeric():
             self.string_length = int(self.string_length)
-        elif type(self.string_length) is not int:
+        else:
             raise ValueError("A numeric value is required for string length.")
-        elif self.string_length not in range(1, 100):
-            raise ValueError("A string length between 1 and 100 is required.")
+
+        if self.num_strings not in range(1, 101):
+            raise ValueError("The number of strings must be between 1 and 100.")
+        if self.string_length not in range(1, 101):
+            raise ValueError("The string length must be between 1 and 100.")
 
         # Determine which types of characters will be included
         if self.has_lowercase:
@@ -74,7 +75,8 @@ class StringGenerator:
                 '!', '@', '#', '$', '%', '^', '&', '*',
                 '_', '-', '+', '=', '/', '|', '`', '~'
             ]
-        else:
+
+        if not self.char_types:
             raise ValueError("At least one character type is required.")
 
     def get_char_type(self):
@@ -151,8 +153,8 @@ class StringGenerator:
         try:
             pyperclip.copy(string)
             print("Copied to the clipboard!")
-        except:
-            print("Something went wrong.")
+        except pyperclip.PyperclipException:
+            print("Something went wrong, please try again.")
 
 
 if __name__ == '__main__':

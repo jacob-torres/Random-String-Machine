@@ -12,13 +12,8 @@ app.config['SECRET_KEY'] = str(uuid.uuid4())
 load_dotenv()
 
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def home():
-    return render_template('home.html')
-
-
-@app.route('/strings', methods=('GET', 'POST'))
-def get_strings():
     if request.method == 'POST':
         num_strings = request.form.get('string-number')
         string_length = request.form.get('string-length')
@@ -35,11 +30,12 @@ def get_strings():
             )
             strings = string_generator.get_strings()
 
-            return redirect(url_for('get_strings'), num_strings=num_strings, strings=strings)
+            return render_template('get_strings.html', num_strings=num_strings, strings=strings)
 
         except ValueError as error:
             flash(error.args[0])
-            return redirect(url_for('home'))
+
+    return render_template('home.html')
 
 
 if __name__ == '__main__':
