@@ -10,8 +10,6 @@ In that spirit, this application generates between 1 and 100 strings of between 
 * Numeric digits
 * Special characters
 
-The frontend of the application is only HTML for the moment, but CSS and JavaScript will be added later.
-
 ## Usage
 
 Clone the repository on Github.
@@ -45,7 +43,7 @@ Open up a browser and navigate to localhost:5000.
 
 ## Commandline Tool
 
-The string generator is functional as both a simple (and temporarily ugly) GUI, and a commandline utility.
+The string generator is functional as both a simple GUI and a commandline utility.
 With a single command, it will copy a random string to the clipboard. The string_generator module is runnable with the following syntax:
 
 ` $ python string_generator/string_generator.py `
