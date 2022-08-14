@@ -1,6 +1,9 @@
 <!doctype html>
 <html lang="en">
     <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+       <meta name="author" content="Jacob A. Torres">
         <title>Random String Machine</title>
 
         <!-- Bootstrap CSS -->
@@ -9,15 +12,16 @@
 
     <body>
         <h1 class="text-primary">Random String Machine</h1>
-
-        <div>
+        <div class="container" style="background-color: LightGray;">
             {% block content %}{% endblock content %}
         </div>
         <hr>
 
-        <footer>
-            <span>Jacob A. Torres  |  2022  |  </span>
-            <span><a href="https://torresengineering.dev/">TorresEngineering.dev</a></span>
+        <footer class="bg-info">
+            <p>&copy;2022 Jacob A. Torres | 
+                <a href="https://torresengineering.dev/">TorresEngineering.dev</a>
+            </p>
+
         </footer>
 
         <!-- Bootstrap Javascripts -->  
